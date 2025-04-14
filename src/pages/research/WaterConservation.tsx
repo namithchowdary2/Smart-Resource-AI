@@ -3,8 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/use-toast";
 import { playSound, playPaperSound } from "@/utils/soundUtils";
+import { jsPDF } from "jspdf";
 
 const WaterConservation = () => {
   const { toast } = useToast();
@@ -21,105 +22,91 @@ const WaterConservation = () => {
       variant: "default",
     });
     
-    // Create appropriate content based on the download type
     if (type === 'pdf') {
-      // For PDF, use a simple HTML structure with embedded styles
-      const pdfContent = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>${paperTitle}: A Review</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 60px; line-height: 1.6; }
-    h1 { color: #333; }
-    h2 { color: #444; margin-top: 20px; }
-    .authors { font-style: italic; color: #555; }
-    .abstract { margin: 20px 0; padding: 10px; background: #f9f9f9; border-left: 4px solid #ccc; }
-    .publication { color: #777; }
-    .section { margin: 20px 0; }
-    ul { margin-left: 20px; }
-  </style>
-</head>
-<body>
-  <h1>${paperTitle}: A Review</h1>
-  <p class="authors">Prof. Alexander Williams, Dr. Emily Chen</p>
-  <p class="publication">Water Resources Management, 2023</p>
-  
-  <div class="abstract">
-    <h2>Abstract</h2>
-    <p>This review paper provides a comprehensive analysis of smart water management systems and their effectiveness in reducing residential water consumption. We examine various technologies, including IoT-enabled water meters, leak detection systems, and adaptive irrigation controllers. The paper synthesizes findings from over 50 studies conducted between 2015 and 2023, identifying best practices and areas for future research. Our analysis indicates that smart water systems can achieve average water savings of 15-28% in residential settings when properly implemented and accompanied by user engagement strategies.</p>
-  </div>
-  
-  <div class="section">
-    <h2>1. Introduction</h2>
-    <p>Water scarcity affects more than 40% of the global population and is projected to worsen with climate change and population growth. Residential water usage accounts for approximately 12% of total water consumption in developed countries, with significant variation depending on local climate and lifestyle factors. Smart water conservation systems have emerged as a promising approach to address this challenge by providing real-time monitoring, automated control, and data-driven insights.</p>
-    <p>This review aims to synthesize current knowledge on smart water conservation technologies, their implementation strategies, and their measured effectiveness. We also identify gaps in the literature and propose directions for future research.</p>
-  </div>
-  
-  <div class="section">
-    <h2>2. Smart Water Metering</h2>
-    <p>Advanced metering infrastructure (AMI) for water has evolved significantly over the past decade. Current systems typically include:</p>
-    <ul>
-      <li>High-resolution flow sensors capable of detecting usage patterns at the fixture level</li>
-      <li>Wireless communication modules for real-time data transmission</li>
-      <li>Cloud-based analytics platforms for data processing and visualization</li>
-      <li>Mobile applications for user engagement and feedback</li>
-    </ul>
-    <p>Studies by Thompson et al. (2021) and Garcia-Rodriguez (2022) demonstrated that providing households with real-time water usage information through smart meters resulted in average water consumption reductions of 9.2% and 12.7%, respectively. These savings were attributed primarily to increased awareness of water usage patterns and the identification of inefficient behaviors.</p>
-  </div>
-  
-  <div class="section">
-    <h2>3. Leak Detection Systems</h2>
-    <p>Undetected leaks account for an estimated 12-14% of residential water consumption (EPA, 2022). Smart leak detection systems have been developed to address this issue using various approaches:</p>
-    <ul>
-      <li>Flow pattern analysis to identify continuous low-level usage indicative of leaks</li>
-      <li>Acoustic sensors that detect the sound of water escaping from pipes</li>
-      <li>Moisture sensors placed in critical locations (e.g., under sinks, near water heaters)</li>
-      <li>Pressure monitoring systems that detect sudden or gradual pressure changes</li>
-    </ul>
-    <p>The effectiveness of these systems varies considerably. A meta-analysis by Chen and Williams (2022) found that smart leak detection systems reduced water waste from leaks by 62-85% when compared to traditional periodic inspection approaches.</p>
-  </div>
-  
-  <div class="section">
-    <h2>6. Conclusion and Future Directions</h2>
-    <p>This review demonstrates that smart water conservation systems offer significant potential for reducing residential water consumption. The most effective implementations combine accurate measurement, automated controls, leak detection, and user engagement strategies tailored to local contexts.</p>
-    <p>Future research should focus on:</p>
-    <ul>
-      <li>Long-term effectiveness and the persistence of behavior changes</li>
-      <li>Integration with other smart home systems for holistic resource management</li>
-      <li>Accessibility and adoption strategies for diverse socioeconomic groups</li>
-      <li>Privacy concerns and data ownership models</li>
-      <li>Standardization of measurement and reporting methodologies</li>
-    </ul>
-  </div>
-  
-  <div class="section">
-    <h2>References</h2>
-    <ul>
-      <li>Thompson, R. et al. (2021). Real-time water consumption feedback and conservation. Journal of Water Resources.</li>
-      <li>Garcia-Rodriguez, M. (2022). Smart water metering in urban environments. Urban Technology Review.</li>
-      <li>Chen, E., & Williams, A. (2022). Meta-analysis of leak detection technologies. Water Conservation Science.</li>
-      <li>Environmental Protection Agency (2022). Residential water consumption report.</li>
-    </ul>
-  </div>
-</body>
-</html>`;
+      // Create PDF document
+      const doc = new jsPDF();
       
-      const blob = new Blob([pdfContent], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
+      // Add title
+      doc.setFontSize(18);
+      doc.text(`${paperTitle}: A Review`, 20, 20);
       
-      // Create a temporary anchor element for download
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${paperTitle.replace(/\s+/g, '-').toLowerCase()}.html`;
+      // Add authors
+      doc.setFontSize(12);
+      doc.text(`Authors: Prof. Alexander Williams, Dr. Emily Chen`, 20, 30);
       
-      // Append to document, click to download, then remove
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Add publication
+      doc.setFontSize(10);
+      doc.text(`Water Resources Management, 2023`, 20, 40);
       
-      // Clean up the URL object
-      setTimeout(() => URL.revokeObjectURL(url), 100);
+      // Add abstract header
+      doc.setFontSize(14);
+      doc.text("Abstract", 20, 55);
+      
+      // Add abstract with word wrapping
+      doc.setFontSize(10);
+      const abstractText = "This review paper provides a comprehensive analysis of smart water management systems and their effectiveness in reducing residential water consumption. We examine various technologies, including IoT-enabled water meters, leak detection systems, and adaptive irrigation controllers. The paper synthesizes findings from over 50 studies conducted between 2015 and 2023, identifying best practices and areas for future research. Our analysis indicates that smart water systems can achieve average water savings of 15-28% in residential settings when properly implemented and accompanied by user engagement strategies.";
+      const splitAbstract = doc.splitTextToSize(abstractText, 170);
+      doc.text(splitAbstract, 20, 65);
+      
+      // Add content sections
+      let yPos = 90;
+      
+      // Introduction section
+      doc.setFontSize(14);
+      doc.text("1. Introduction", 20, yPos);
+      yPos += 10;
+      
+      doc.setFontSize(10);
+      const introText = "Water scarcity affects more than 40% of the global population and is projected to worsen with climate change and population growth. Residential water usage accounts for approximately 12% of total water consumption in developed countries, with significant variation depending on local climate and lifestyle factors. Smart water conservation systems have emerged as a promising approach to address this challenge by providing real-time monitoring, automated control, and data-driven insights.";
+      const splitIntro = doc.splitTextToSize(introText, 170);
+      doc.text(splitIntro, 20, yPos);
+      yPos += splitIntro.length * 7;
+      
+      // Smart Water Metering section
+      doc.setFontSize(14);
+      doc.text("2. Smart Water Metering", 20, yPos);
+      yPos += 10;
+      
+      doc.setFontSize(10);
+      const meteringText = "Advanced metering infrastructure (AMI) for water has evolved significantly over the past decade. Current systems typically include high-resolution flow sensors, wireless communication modules, cloud-based analytics platforms, and mobile applications for user engagement and feedback.";
+      const splitMetering = doc.splitTextToSize(meteringText, 170);
+      doc.text(splitMetering, 20, yPos);
+      yPos += splitMetering.length * 7;
+      
+      // Leak Detection Systems section
+      doc.setFontSize(14);
+      doc.text("3. Leak Detection Systems", 20, yPos);
+      yPos += 10;
+      
+      doc.setFontSize(10);
+      const leakText = "Undetected leaks account for an estimated 12-14% of residential water consumption (EPA, 2022). Smart leak detection systems have been developed to address this issue using various approaches including flow pattern analysis, acoustic sensors, moisture sensors, and pressure monitoring systems.";
+      const splitLeak = doc.splitTextToSize(leakText, 170);
+      doc.text(splitLeak, 20, yPos);
+      
+      // Add new page for conclusion
+      doc.addPage();
+      
+      // Conclusion section
+      doc.setFontSize(14);
+      doc.text("6. Conclusion and Future Directions", 20, 20);
+      
+      doc.setFontSize(10);
+      const conclusionText = "This review demonstrates that smart water conservation systems offer significant potential for reducing residential water consumption. The most effective implementations combine accurate measurement, automated controls, leak detection, and user engagement strategies tailored to local contexts.";
+      const splitConclusion = doc.splitTextToSize(conclusionText, 170);
+      doc.text(splitConclusion, 20, 30);
+      
+      // Add references
+      doc.setFontSize(14);
+      doc.text("References", 20, 50);
+      
+      doc.setFontSize(10);
+      doc.text("Thompson, R. et al. (2021). Real-time water consumption feedback and conservation. Journal of Water Resources.", 20, 60);
+      doc.text("Garcia-Rodriguez, M. (2022). Smart water metering in urban environments. Urban Technology Review.", 20, 70);
+      doc.text("Chen, E., & Williams, A. (2022). Meta-analysis of leak detection technologies. Water Conservation Science.", 20, 80);
+      doc.text("Environmental Protection Agency (2022). Residential water consumption report.", 20, 90);
+      
+      // Save the PDF
+      doc.save(`${paperTitle.replace(/\s+/g, '-').toLowerCase()}.pdf`);
     } else {
       // For data files, use structured JSON content
       const dataContent = JSON.stringify({

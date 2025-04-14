@@ -1,4 +1,3 @@
-
 import React, { useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FileText, Users, BarChart, Download, FileDown, Database } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { playSound, playPaperSound } from "@/utils/soundUtils";
+import { jsPDF } from "jspdf";
 
 const Research = () => {
   const { toast } = useToast();
@@ -57,81 +57,65 @@ const Research = () => {
   const handleDownload = useCallback((type: string, paper: any) => {
     playPaperSound();
     
-    // Since we don't have actual files, we'll simulate a download
     toast({
       title: `${type === 'pdf' ? 'Paper' : 'Supplementary Data'} Downloaded`,
       description: `${paper.title} ${type === 'pdf' ? 'PDF' : 'data'} download started.`,
       variant: "default",
     });
 
-    // Create a PDF-like content
     if (type === 'pdf') {
-      // For PDF, use a simple HTML structure with embedded styles
-      const pdfContent = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>${paper.title}</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 60px; line-height: 1.6; }
-    h1 { color: #333; }
-    h2 { color: #444; margin-top: 20px; }
-    .authors { font-style: italic; color: #555; }
-    .abstract { margin: 20px 0; padding: 10px; background: #f9f9f9; border-left: 4px solid #ccc; }
-    .publication { color: #777; }
-  </style>
-</head>
-<body>
-  <h1>${paper.title}</h1>
-  <p class="authors">${paper.authors}</p>
-  <p class="publication">${paper.publication}</p>
-  
-  <div class="abstract">
-    <h2>Abstract</h2>
-    <p>${paper.abstract}</p>
-  </div>
-  
-  <h2>Introduction</h2>
-  <p>This is a sample paper for demonstration purposes. In a real academic paper, this section would contain the research background, objectives, and methodology.</p>
-  
-  <h2>Methods</h2>
-  <p>Our research methodology involved data collection from multiple sources, statistical analysis, and machine learning algorithms to derive meaningful patterns and insights.</p>
-  
-  <h2>Results</h2>
-  <p>The results of our study indicate significant improvements in resource conservation when applying the proposed techniques.</p>
-  
-  <h2>Discussion</h2>
-  <p>These findings suggest that smart resource management systems can effectively reduce consumption while maintaining user satisfaction.</p>
-  
-  <h2>Conclusion</h2>
-  <p>In conclusion, our research demonstrates the effectiveness of the proposed approach and provides a foundation for future work in this area.</p>
-  
-  <h2>References</h2>
-  <ul>
-    <li>Smith, J. (2023). Resource Conservation Techniques. Journal of Sustainability.</li>
-    <li>Johnson, A. (2022). Machine Learning Applications in Energy Management. Energy Research Review.</li>
-    <li>Williams, B. (2024). User Experience in Smart Home Systems. HCI Journal.</li>
-  </ul>
-</body>
-</html>`;
+      const doc = new jsPDF();
       
-      const blob = new Blob([pdfContent], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
+      doc.setFontSize(18);
+      doc.text(paper.title, 20, 20);
       
-      // Create a temporary anchor element for download
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${paper.title.replace(/\s+/g, '-').toLowerCase()}.html`;
+      doc.setFontSize(12);
+      doc.text(`Authors: ${paper.authors}`, 20, 30);
       
-      // Append to document, click to download, then remove
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      doc.setFontSize(10);
+      doc.text(`Publication: ${paper.publication}`, 20, 40);
       
-      // Clean up the URL object
-      setTimeout(() => URL.revokeObjectURL(url), 100);
+      doc.setFontSize(14);
+      doc.text("Abstract", 20, 55);
+      
+      doc.setFontSize(10);
+      const splitText = doc.splitTextToSize(paper.abstract, 170);
+      doc.text(splitText, 20, 65);
+      
+      let yPos = 85;
+      
+      doc.setFontSize(14);
+      doc.text("1. Introduction", 20, yPos);
+      yPos += 10;
+      
+      doc.setFontSize(10);
+      const introText = "This is a sample paper for demonstration purposes. In a real academic paper, this section would contain the research background, objectives, and methodology.";
+      const splitIntro = doc.splitTextToSize(introText, 170);
+      doc.text(splitIntro, 20, yPos);
+      yPos += splitIntro.length * 7;
+      
+      doc.setFontSize(14);
+      doc.text("2. Methods", 20, yPos);
+      yPos += 10;
+      
+      doc.setFontSize(10);
+      const methodsText = "Our research methodology involved data collection from multiple sources, statistical analysis, and machine learning algorithms to derive meaningful patterns and insights.";
+      const splitMethods = doc.splitTextToSize(methodsText, 170);
+      doc.text(splitMethods, 20, yPos);
+      yPos += splitMethods.length * 7;
+      
+      doc.setFontSize(14);
+      doc.text("3. Results", 20, yPos);
+      yPos += 10;
+      
+      doc.setFontSize(10);
+      const resultsText = "The results of our study indicate significant improvements in resource conservation when applying the proposed techniques.";
+      const splitResults = doc.splitTextToSize(resultsText, 170);
+      doc.text(splitResults, 20, yPos);
+      yPos += splitResults.length * 7;
+      
+      doc.save(`${paper.title.replace(/\s+/g, '-').toLowerCase()}.pdf`);
     } else {
-      // For data files, continue with text format but with structured content
       const dataContent = JSON.stringify({
         title: paper.title,
         authors: paper.authors,
@@ -149,17 +133,14 @@ const Research = () => {
       const blob = new Blob([dataContent], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       
-      // Create a temporary anchor element for download
       const link = document.createElement('a');
       link.href = url;
       link.download = `${paper.title.replace(/\s+/g, '-').toLowerCase()}-data.json`;
       
-      // Append to document, click to download, then remove
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       
-      // Clean up the URL object
       setTimeout(() => URL.revokeObjectURL(url), 100);
     }
   }, [toast]);
