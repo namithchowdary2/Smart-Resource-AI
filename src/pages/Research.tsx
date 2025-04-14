@@ -1,3 +1,4 @@
+
 import React, { useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FileText, Users, BarChart, Download, FileDown, Database } from "lucide-react";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/components/ui/use-toast";
 import { playSound, playPaperSound } from "@/utils/soundUtils";
 
 const Research = () => {
@@ -63,26 +64,104 @@ const Research = () => {
       variant: "default",
     });
 
-    // Create a sample text file to download
-    const content = type === 'pdf' 
-      ? `This is a sample PDF content for ${paper.title}`
-      : `This is sample supplementary data for ${paper.title}`;
-    
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    
-    // Create a temporary anchor element for download
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${paper.title.replace(/\s+/g, '-').toLowerCase()}${type === 'pdf' ? '.pdf' : '-data.zip'}`;
-    
-    // Append to document, click to download, then remove
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    // Clean up the URL object
-    setTimeout(() => URL.revokeObjectURL(url), 100);
+    // Create a PDF-like content
+    if (type === 'pdf') {
+      // For PDF, use a simple HTML structure with embedded styles
+      const pdfContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${paper.title}</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 60px; line-height: 1.6; }
+    h1 { color: #333; }
+    h2 { color: #444; margin-top: 20px; }
+    .authors { font-style: italic; color: #555; }
+    .abstract { margin: 20px 0; padding: 10px; background: #f9f9f9; border-left: 4px solid #ccc; }
+    .publication { color: #777; }
+  </style>
+</head>
+<body>
+  <h1>${paper.title}</h1>
+  <p class="authors">${paper.authors}</p>
+  <p class="publication">${paper.publication}</p>
+  
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>${paper.abstract}</p>
+  </div>
+  
+  <h2>Introduction</h2>
+  <p>This is a sample paper for demonstration purposes. In a real academic paper, this section would contain the research background, objectives, and methodology.</p>
+  
+  <h2>Methods</h2>
+  <p>Our research methodology involved data collection from multiple sources, statistical analysis, and machine learning algorithms to derive meaningful patterns and insights.</p>
+  
+  <h2>Results</h2>
+  <p>The results of our study indicate significant improvements in resource conservation when applying the proposed techniques.</p>
+  
+  <h2>Discussion</h2>
+  <p>These findings suggest that smart resource management systems can effectively reduce consumption while maintaining user satisfaction.</p>
+  
+  <h2>Conclusion</h2>
+  <p>In conclusion, our research demonstrates the effectiveness of the proposed approach and provides a foundation for future work in this area.</p>
+  
+  <h2>References</h2>
+  <ul>
+    <li>Smith, J. (2023). Resource Conservation Techniques. Journal of Sustainability.</li>
+    <li>Johnson, A. (2022). Machine Learning Applications in Energy Management. Energy Research Review.</li>
+    <li>Williams, B. (2024). User Experience in Smart Home Systems. HCI Journal.</li>
+  </ul>
+</body>
+</html>`;
+      
+      const blob = new Blob([pdfContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      
+      // Create a temporary anchor element for download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${paper.title.replace(/\s+/g, '-').toLowerCase()}.html`;
+      
+      // Append to document, click to download, then remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the URL object
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    } else {
+      // For data files, continue with text format but with structured content
+      const dataContent = JSON.stringify({
+        title: paper.title,
+        authors: paper.authors,
+        date: new Date().toISOString(),
+        dataPoints: [
+          { name: "Sample 1", value: Math.random() * 100 },
+          { name: "Sample 2", value: Math.random() * 100 },
+          { name: "Sample 3", value: Math.random() * 100 },
+          { name: "Sample 4", value: Math.random() * 100 },
+          { name: "Sample 5", value: Math.random() * 100 },
+        ],
+        methods: "This is sample supplementary data that would accompany the research paper."
+      }, null, 2);
+      
+      const blob = new Blob([dataContent], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      // Create a temporary anchor element for download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${paper.title.replace(/\s+/g, '-').toLowerCase()}-data.json`;
+      
+      // Append to document, click to download, then remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the URL object
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
   }, [toast]);
 
   return (
