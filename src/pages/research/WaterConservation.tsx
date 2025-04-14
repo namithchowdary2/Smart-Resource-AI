@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -191,8 +190,20 @@ const WaterConservation = () => {
                 
                 <div className="mt-8">
                   <h3 className="text-xl font-semibold mb-4">Download</h3>
-                  <Button variant="outline" className="w-full mb-2" onClick={() => handleDownload('pdf')}>PDF (2.4 MB)</Button>
-                  <Button variant="outline" className="w-full" onClick={() => handleDownload('data')}>Supplementary Data</Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full mb-2" 
+                    onClick={() => handleDownload('pdf')}
+                  >
+                    PDF (2.4 MB)
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={() => handleDownload('data')}
+                  >
+                    Supplementary Data
+                  </Button>
                 </div>
               </div>
             </div>
