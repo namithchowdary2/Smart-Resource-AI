@@ -1,15 +1,16 @@
-
-import React from "react";
+import React, { useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { FileText, Users, BarChart, Download, FileDown, Database } from "lucide-react";
-import { toast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/useToast";
 import { playSound, playPaperSound } from "@/utils/soundUtils";
 
 const Research = () => {
+  const { toast } = useToast();
+  
   const papers = [
     {
       id: 1,
@@ -52,7 +53,7 @@ const Research = () => {
     }
   ];
 
-  const handleDownload = (type: string, paper: any) => {
+  const handleDownload = useCallback((type: string, paper: any) => {
     playPaperSound();
     
     // Since we don't have actual files, we'll simulate a download
@@ -82,7 +83,7 @@ const Research = () => {
     
     // Clean up the URL object
     setTimeout(() => URL.revokeObjectURL(url), 100);
-  };
+  }, [toast]);
 
   return (
     <div className="min-h-screen flex flex-col">

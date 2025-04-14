@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
-import { toast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/useToast";
 import { playSound, playPaperSound } from "@/utils/soundUtils";
 
 const WaterConservation = () => {
-  const handleDownload = (type: string) => {
+  const { toast } = useToast();
+  
+  const handleDownload = useCallback((type: string) => {
     playPaperSound();
     
     // Create a sample text file to download
@@ -38,7 +40,7 @@ const WaterConservation = () => {
       description: `${paperTitle} ${type === 'pdf' ? 'PDF' : 'data'} download started.`,
       variant: "default",
     });
-  };
+  }, [toast]);
 
   return (
     <div className="min-h-screen flex flex-col">
