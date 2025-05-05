@@ -1,4 +1,3 @@
-
 import React, { useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,7 +12,42 @@ import { jsPDF } from "jspdf";
 const Research = () => {
   const { toast } = useToast();
   
-  // ... keep existing code (papers array)
+  // Define the papers array
+  const papers = [
+    {
+      id: 1,
+      title: "Machine Learning for Energy Consumption Prediction",
+      authors: "Dr. Sarah Johnson, Dr. Michael Chen",
+      publication: "Journal of Sustainable Computing (2024)",
+      abstract: "This paper presents novel machine learning techniques for predicting household energy consumption patterns. By analyzing historical usage data across diverse households, our model achieves 94% accuracy in day-ahead predictions.",
+      link: "/research/machine-learning",
+      pdfSize: "2.4 MB",
+      dataSize: "1.8 MB",
+      icon: <BarChart className="h-12 w-12 text-eco-blue dark:text-blue-400" />
+    },
+    {
+      id: 2,
+      title: "User Adoption Patterns in Resource Conservation Applications",
+      authors: "Prof. Emily Rodriguez, Dr. James Wilson, Lisa Thompson",
+      publication: "International Journal of Human-Computer Interaction (2023)",
+      abstract: "This research examines the factors influencing user adoption and sustained engagement with resource conservation applications. Through a longitudinal study of 5,000 users, we identify key interface elements and notification strategies that increase conservation behavior.",
+      link: "/research/user-adoption",
+      pdfSize: "3.1 MB",
+      dataSize: "4.6 MB",
+      icon: <Users className="h-12 w-12 text-eco-blue dark:text-blue-400" />
+    },
+    {
+      id: 3,
+      title: "Water Conservation Through Smart Home Integration",
+      authors: "Dr. David Patel, Dr. Rebecca Sanchez",
+      publication: "Water Resources Management (2023)",
+      abstract: "This paper demonstrates the effectiveness of integrating smart water monitoring devices with mobile applications for residential water conservation. Our 12-month study shows an average reduction of 27% in household water consumption when using real-time feedback systems.",
+      link: "/research/water-conservation",
+      pdfSize: "1.9 MB",
+      dataSize: "2.2 MB",
+      icon: <FileText className="h-12 w-12 text-eco-blue dark:text-blue-400" />
+    }
+  ];
   
   const handleDownload = useCallback((type: string, paper: any) => {
     playPaperSound();
@@ -122,10 +156,7 @@ const Research = () => {
     }
   }, [toast]);
 
-  // ... keep existing code (JSX for the component)
-
   return (
-    // ... keep existing code (component JSX structure)
     <div className="min-h-screen flex flex-col">
       <Header />
       
