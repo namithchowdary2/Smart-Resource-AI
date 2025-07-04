@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -36,18 +37,41 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
     building_orientation: "South",
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const validateField = (name: string, value: number) => {
+    let error = '';
+    switch (name) {
+      case 'usage_percent':
+      case 'humidity_percent':
+        if (value < 0 || value > 100) error = 'Must be between 0 and 100';
+        break;
+      case 'solar_kwh':
+        if (value < 0 || value > 20) error = 'Must be between 0 and 20 kWh';
+        break;
+    }
+    return error;
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const numValue = parseFloat(value);
     
     if (!isNaN(numValue)) {
       setFormData((prev) => ({ ...prev, [name]: numValue }));
+      const error = validateField(name, numValue);
+      setErrors(prev => ({ ...prev, [name]: error }));
+      setTouched(prev => ({ ...prev, [name]: true }));
     }
   };
 
   const handleSliderChange = (name: string, value: number[]) => {
     playClickSound();
     setFormData((prev) => ({ ...prev, [name]: value[0] }));
+    const error = validateField(name, value[0]);
+    setErrors(prev => ({ ...prev, [name]: error }));
+    setTouched(prev => ({ ...prev, [name]: true }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -82,7 +106,13 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="eco-card">
+    <motion.form 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      onSubmit={handleSubmit} 
+      className="eco-card"
+    >
       <div className="bg-eco-gradient p-4 text-white flex justify-between items-center">
         <h2 className="text-xl font-semibold">Appliance Energy Optimizer</h2>
         <Badge className="bg-white/20 hover:bg-white/30 text-white">
@@ -93,7 +123,11 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
       
       <div className="p-6 space-y-6">
         {/* Energy Efficient Appliances Usage */}
-        <div className="form-input-container">
+        <motion.div 
+          className="form-input-container"
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
           <div className="flex justify-between mb-2">
             <label htmlFor="usage_percent" className="form-label">
               Energy Efficient Appliances Usage
@@ -116,10 +150,23 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
             <span>Low</span>
             <span>High</span>
           </div>
-        </div>
+          {touched.usage_percent && errors.usage_percent && (
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-red-500 text-xs mt-1"
+            >
+              {errors.usage_percent}
+            </motion.p>
+          )}
+        </motion.div>
 
         {/* Humidity Levels */}
-        <div className="form-input-container">
+        <motion.div 
+          className="form-input-container"
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
           <div className="flex justify-between mb-2">
             <label htmlFor="humidity_percent" className="form-label">
               Humidity Levels
@@ -142,10 +189,23 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
             <span>0%</span>
             <span>100%</span>
           </div>
-        </div>
+          {touched.humidity_percent && errors.humidity_percent && (
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-red-500 text-xs mt-1"
+            >
+              {errors.humidity_percent}
+            </motion.p>
+          )}
+        </motion.div>
 
         {/* Solar Energy Generated */}
-        <div className="form-input-container">
+        <motion.div 
+          className="form-input-container"
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
           <label htmlFor="solar_kwh" className="form-label">
             Solar Energy Generated (kWh/day)
           </label>
@@ -158,9 +218,22 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
             min={0}
             max={20}
             step={0.1}
-            className="w-full"
+            className={`w-full transition-all duration-200 ${
+              touched.solar_kwh && errors.solar_kwh 
+                ? 'border-red-500 focus:border-red-500' 
+                : 'focus:border-primary'
+            }`}
           />
-        </div>
+          {touched.solar_kwh && errors.solar_kwh && (
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-red-500 text-xs mt-1"
+            >
+              {errors.solar_kwh}
+            </motion.p>
+          )}
+        </motion.div>
 
         {/* Wall Material Type */}
         <div className="form-input-container">
@@ -228,22 +301,31 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ onSubmit, isLoading }) 
           </Select>
         </div>
 
-        <Button 
-          type="submit" 
-          className="w-full bg-eco-blue hover:bg-eco-blue-dark flex items-center justify-center"
-          disabled={isLoading}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
-          {isLoading ? (
-            <>Calculating with ML Model...</>
-          ) : (
-            <>
+          <Button 
+            type="submit" 
+            className="w-full bg-eco-blue hover:bg-eco-blue-dark flex items-center justify-center"
+            disabled={isLoading || Object.values(errors).some(error => error)}
+          >
+            {isLoading ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="mr-2"
+              >
+                <Brain className="h-4 w-4" />
+              </motion.div>
+            ) : (
               <Brain className="mr-2 h-4 w-4" />
-              Run Gradient Boosting Prediction
-            </>
-          )}
-        </Button>
+            )}
+            {isLoading ? "Calculating with ML Model..." : "Run Gradient Boosting Prediction"}
+          </Button>
+        </motion.div>
       </div>
-    </form>
+    </motion.form>
   );
 };
 
