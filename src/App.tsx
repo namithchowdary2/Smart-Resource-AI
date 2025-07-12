@@ -38,6 +38,7 @@ import Authentication from "./pages/api-reference/Authentication";
 import MachineLearning from "./pages/research/MachineLearning";
 import WaterConservation from "./pages/research/WaterConservation";
 import UserAdoption from "./pages/research/UserAdoption";
+import ScheduleDemo from "./pages/ScheduleDemo";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +73,8 @@ const App = () => (
               <Route path="/research/machine-learning" element={<MachineLearning />} />
               <Route path="/research/water-conservation" element={<WaterConservation />} />
               <Route path="/research/user-adoption" element={<UserAdoption />} />
+              
+              <Route path="/schedule-demo" element={<ScheduleDemo />} />
               
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />

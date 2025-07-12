@@ -50,7 +50,7 @@ const InfoSection: React.FC = () => {
                       <span>Lower standby power waste from idle appliances</span>
                     </li>
                   </ul>
-                  <Button className="bg-eco-blue-dark hover:bg-eco-blue">
+                  <Button className="bg-eco-blue-dark hover:bg-eco-blue" href="/tips">
                     Learn Energy Saving Tips
                   </Button>
                 </div>
@@ -105,7 +105,7 @@ const InfoSection: React.FC = () => {
                       <span>Optimize water heater efficiency</span>
                     </li>
                   </ul>
-                  <Button className="bg-eco-green-dark hover:bg-eco-green">
+                  <Button className="bg-eco-green-dark hover:bg-eco-green" href="/research/water-conservation">
                     Water Conservation Guide
                   </Button>
                 </div>
@@ -167,7 +167,7 @@ const InfoSection: React.FC = () => {
                       <span>Extended appliance lifespan</span>
                     </li>
                   </ul>
-                  <Button className="bg-eco-green hover:bg-eco-green-dark">
+                  <Button className="bg-eco-green hover:bg-eco-green-dark" href="#optimize">
                     Calculate Your Savings
                   </Button>
                 </div>

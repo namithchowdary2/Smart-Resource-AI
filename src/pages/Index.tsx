@@ -419,7 +419,7 @@ const Index = () => {
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-eco-blue-dark" href="#contact">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-eco-blue-dark" href="/schedule-demo">
                 Schedule Demo
               </Button>
             </motion.div>
