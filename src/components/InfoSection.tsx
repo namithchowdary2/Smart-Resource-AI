@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { applianceData } from "@/data/mockData";
+import SavingsCalculator from "./SavingsCalculator";
 
 const InfoSection: React.FC = () => {
   return (
@@ -167,9 +168,7 @@ const InfoSection: React.FC = () => {
                       <span>Extended appliance lifespan</span>
                     </li>
                   </ul>
-                  <Button className="bg-eco-green hover:bg-eco-green-dark" href="#optimize">
-                    Calculate Your Savings
-                  </Button>
+                  <SavingsCalculator />
                 </div>
                 
                 <div className="md:w-1/2">

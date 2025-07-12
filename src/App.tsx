@@ -39,6 +39,7 @@ import MachineLearning from "./pages/research/MachineLearning";
 import WaterConservation from "./pages/research/WaterConservation";
 import UserAdoption from "./pages/research/UserAdoption";
 import ScheduleDemo from "./pages/ScheduleDemo";
+import BlogPost from "./pages/blog/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -74,7 +75,8 @@ const App = () => (
               <Route path="/research/water-conservation" element={<WaterConservation />} />
               <Route path="/research/user-adoption" element={<UserAdoption />} />
               
-              <Route path="/schedule-demo" element={<ScheduleDemo />} />
+            <Route path="/schedule-demo" element={<ScheduleDemo />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
               
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />

@@ -27,45 +27,60 @@ const Tutorials = () => {
             <div className="mb-8">
               <h3>1. Platform Introduction</h3>
               <div className="bg-gray-100 rounded-lg p-6 mb-4">
-                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4">
-                  <div className="flex items-center justify-center h-full text-white">
-                    Video: Platform Overview (10:23)
-                  </div>
+                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4 relative overflow-hidden">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="Platform Overview"
+                    allowFullScreen
+                  />
                 </div>
                 <p>
                   This introductory video provides a complete tour of the Smart Resource Conservation platform, 
                   highlighting key features and navigation tips. Perfect for new users who want to get familiar 
                   with the interface.
                 </p>
-                <Button variant="outline" className="mt-2">Watch Video</Button>
+                <Button variant="outline" className="mt-2" asChild>
+                  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+                </Button>
               </div>
               
               <h3>2. Setting Up Your First Project</h3>
               <div className="bg-gray-100 rounded-lg p-6 mb-4">
-                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4">
-                  <div className="flex items-center justify-center h-full text-white">
-                    Video: Project Setup Guide (8:45)
-                  </div>
+                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4 relative overflow-hidden">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/jNQXAC9IVRw"
+                    title="Project Setup Guide"
+                    allowFullScreen
+                  />
                 </div>
                 <p>
                   Learn how to create and configure your first resource optimization project. This tutorial walks you 
                   through defining goals, connecting devices, and establishing a baseline for your conservation efforts.
                 </p>
-                <Button variant="outline" className="mt-2">Watch Video</Button>
+                <Button variant="outline" className="mt-2" asChild>
+                  <a href="https://www.youtube.com/watch?v=jNQXAC9IVRw" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+                </Button>
               </div>
               
               <h3>3. Mobile App Walkthrough</h3>
               <div className="bg-gray-100 rounded-lg p-6 mb-4">
-                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4">
-                  <div className="flex items-center justify-center h-full text-white">
-                    Video: Mobile Features (6:12)
-                  </div>
+                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4 relative overflow-hidden">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/9bZkp7q19f0"
+                    title="Mobile Features Tutorial"
+                    allowFullScreen
+                  />
                 </div>
                 <p>
                   Access Smart Resource Conservation features on the go with our mobile app. This tutorial demonstrates 
                   how to install the app, log in securely, and use key features from your smartphone or tablet.
                 </p>
-                <Button variant="outline" className="mt-2">Watch Video</Button>
+                <Button variant="outline" className="mt-2" asChild>
+                  <a href="https://www.youtube.com/watch?v=9bZkp7q19f0" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+                </Button>
               </div>
             </div>
             
@@ -74,15 +89,20 @@ const Tutorials = () => {
             <div className="mb-8">
               <h3>Custom Reporting</h3>
               <div className="bg-gray-100 rounded-lg p-6 mb-4">
-                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4">
-                  <div className="flex items-center justify-center h-full text-white">
-                    Video: Advanced Reports (12:37)
-                  </div>
+                <div className="aspect-w-16 aspect-h-9 bg-black rounded-md mb-4 relative overflow-hidden">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/FTQbiNvZqaY"
+                    title="Advanced Reports Tutorial"
+                    allowFullScreen
+                  />
                 </div>
                 <p>
                   Create customized reports and dashboards that focus on the metrics most relevant to your conservation goals.
                 </p>
-                <Button variant="outline" className="mt-2">Watch Video</Button>
+                <Button variant="outline" className="mt-2" asChild>
+                  <a href="https://www.youtube.com/watch?v=FTQbiNvZqaY" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+                </Button>
               </div>
             </div>
             

@@ -59,7 +59,7 @@ const Blog = () => {
                   </p>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-500">By {post.author}</span>
-                    <Button variant="link" className="text-eco-blue p-0">
+                    <Button variant="link" className="text-eco-blue p-0" href={`/blog/${post.id}`}>
                       Read More
                     </Button>
                   </div>
