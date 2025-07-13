@@ -27,7 +27,6 @@ import Settings from "./pages/Settings";
 // Documentation pages
 import GettingStarted from "./pages/documentation/GettingStarted";
 import UserManual from "./pages/documentation/UserManual";
-import Tutorials from "./pages/documentation/Tutorials";
 
 // API Reference pages
 import Prediction from "./pages/api-reference/Prediction";
@@ -61,7 +60,6 @@ const App = () => (
               <Route path="/documentation" element={<Documentation />} />
               <Route path="/documentation/getting-started" element={<GettingStarted />} />
               <Route path="/documentation/user-manual" element={<UserManual />} />
-              <Route path="/documentation/tutorials" element={<Tutorials />} />
               
               {/* API Reference routes */}
               <Route path="/api-reference" element={<ApiReference />} />

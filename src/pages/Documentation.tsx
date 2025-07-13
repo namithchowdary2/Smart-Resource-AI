@@ -3,7 +3,7 @@ import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { FileText, Book, Video } from "lucide-react";
+import { FileText, Book } from "lucide-react";
 
 const Documentation = () => {
   const documents = [
@@ -20,13 +20,6 @@ const Documentation = () => {
       description: "Comprehensive guide covering all features and functionality of the Smart Resource platform.",
       icon: <Book className="h-8 w-8 text-eco-blue" />,
       link: "/documentation/user-manual"
-    },
-    {
-      id: 3,
-      title: "Video Tutorials",
-      description: "Step-by-step video guides showing how to use key features of the platform for maximum efficiency.",
-      icon: <Video className="h-8 w-8 text-eco-blue" />,
-      link: "/documentation/tutorials"
     }
   ];
 
@@ -42,7 +35,7 @@ const Documentation = () => {
             to help you make the most of our energy optimization platform.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             {documents.map((doc) => (
               <div key={doc.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                 <div className="mb-4">
