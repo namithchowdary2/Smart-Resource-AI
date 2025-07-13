@@ -7,7 +7,8 @@ const soundPaths: Record<string, string> = {
   success: '/sounds/success.mp3',
   error: '/sounds/error.mp3',
   click: '/sounds/click.mp3',
-  paper: '/sounds/paper.mp3'
+  paper: '/sounds/paper.mp3',
+  alarm: '/sounds/alarm.mp3'
 };
 
 // Set of audio elements
@@ -98,6 +99,7 @@ export const playSuccessSound = (): void => playSound('success');
 export const playErrorSound = (): void => playSound('error');
 export const playClickSound = (): void => playSound('click');
 export const playPaperSound = (): void => playSound('paper');
+export const playAlarmSound = (): void => playSound('alarm');
 
 // Add dark mode state management to our utils
 let darkMode = localStorage.getItem('darkMode') === 'true';

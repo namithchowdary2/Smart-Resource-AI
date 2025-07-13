@@ -11,6 +11,7 @@ import AnimatedCounter from "@/components/AnimatedCounter";
 import ParticleBackground from "@/components/ParticleBackground";
 import InteractiveChart from "@/components/InteractiveChart";
 import ExpandableTipCard from "@/components/ExpandableTipCard";
+import EnergyAlarmControl from "@/components/EnergyAlarmControl";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { PredictionInput, PredictionResult, predictEnergyEfficiency } from "@/api/predictAPI";
 import { efficiencyTips } from "@/data/mockData";
@@ -314,6 +315,18 @@ const Index = () => {
                 </motion.div>
               )}
             </div>
+          </div>
+          
+          {/* Energy Alarm Control Section */}
+          <div className="mt-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <EnergyAlarmControl />
+            </motion.div>
           </div>
         </div>
       </section>
